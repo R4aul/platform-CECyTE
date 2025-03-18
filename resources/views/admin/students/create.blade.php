@@ -54,7 +54,7 @@
     
                 <div class="flex justify-end">
                     <x-button>
-                        Actualizar
+                        Crear Alumno
                     </x-button>
                 </div>
             </form>

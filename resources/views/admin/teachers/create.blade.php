@@ -69,7 +69,7 @@
 
                 <div class="flex justify-end mt-6">
                     <x-button>
-                        Actualizar
+                        Crear Docente
                     </x-button>
                 </div>
             </form>
