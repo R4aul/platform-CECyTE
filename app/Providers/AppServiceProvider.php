@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Http\Controllers\Responses\CustomLoginResponse;
 use Laravel\Fortify\Http\Responses\LoginResponse;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +22,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Forzar el esquema https en producción
+        if (env('APP_ENV') === 'production') {
+            URL::forceScheme('https');
+        }
+
     }
 }
