@@ -12,7 +12,10 @@
                         <img src="https://via.placeholder.com/300" alt="{{ $subject->subject_name }}" class="w-full h-40 object-cover rounded">
                         <h2 class="text-xl font-bold text-gray-800 mt-4">{{ $subject->semester_name }}</h2>
                         <p class="text-gray-600">Ciclo Escolar: 2024-2025</p>
-                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition w-full">Subir Actividad</button>
+                        <a href="{{route('materials.index',$subject)}}" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition w-full text-center block">
+    Subir Actividad
+</a>
+
                     </div>
                 @endforeach
             </div>
