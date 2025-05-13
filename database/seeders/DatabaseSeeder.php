@@ -37,7 +37,6 @@ class DatabaseSeeder extends Seeder
             'name' => 'User Test 1',
             'paternal_surname' => 'Escobar',
             'maternal_surname' => 'Hernandez',
-            'matriculation' => 'F89382047182934',
             'email' => 'andrearesendizbod@gmail.com',
             'password' => 'Rora031020MH$',
         ])->assignRole('Docente');
@@ -46,6 +45,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'User Test 2',
             'maternal_surname' => 'Corona',
             'paternal_surname' => 'Hernandez',
+            'matriculation' => 'F89382047182934',
             'email' => 'test2@example.com',
             'password' => 'password',
         ])->assignRole('Alumno');
@@ -74,7 +74,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Registration::create([
-            'user_id' => 2,
+            'user_id' => $student->id,
             'semester_id' => 1,
             'school_year_id' => 1,
             'registration_date' => now(),
