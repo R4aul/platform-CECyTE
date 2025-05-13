@@ -37,6 +37,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'User Test 1',
             'paternal_surname' => 'Escobar',
             'maternal_surname' => 'Hernandez',
+            'matriculation' => 'F89382047182934',
             'email' => 'andrearesendizbod@gmail.com',
             'password' => 'Rora031020MH$',
         ])->assignRole('Docente');
