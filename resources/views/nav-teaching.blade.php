@@ -142,6 +142,11 @@
                 Docentes</a>
             <a href="{{ route('students.index') }}" class="block px-4 py-2 hover:bg-gray-700 transition">Administrar
                 Alumnos</a>
+            <a href="{{ route('subjects.index') }}" class="block px-4 py-2 hover:bg-gray-700 transition">Administrar materias</a>
+            <a href="{{ route('schoolYears.index') }}" class="block px-4 py-2 hover:bg-gray-700 transition">Ciclos escolares</a>
+            <a href="{{ route('semester.index') }}" class="block px-4 py-2 hover:bg-gray-700 transition">Administrar grados</a>
+            <a href="{{ route('register.students') }}" class="block px-4 py-2 hover:bg-gray-700 transition">Agregar alumnos</a>
+            <a href="{{ route('qualifications.index') }}" class="block px-4 py-2 hover:bg-gray-700 transition">Subir calificaciones</a>
             <a href="{{ route('profile.show') }}" class="block px-4 py-2 hover:bg-gray-700 transition">Perfil</a>
             <a href="{{ route('logout') }}" class="block px-4 py-2 hover:bg-red-600 transition"
                 onclick="document.getElementById('logout-form').submit(); return false;">Cerrar sesión</a>

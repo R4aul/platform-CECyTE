@@ -11,7 +11,7 @@
                 @method('PUT')
                 <div class="mb-4 relative">
                     <figure>
-                        <img class="aspect-[16/9] object-cover object-center w-full" src="{{asset('/storage/'.$subject->image)}}"
+                        <img class="aspect-[16/9] object-cover object-center w-full" src="{{asset($subject->image)}}"
                             alt="" id="imgPreview">
                     </figure>
                     <div class="absolute top-8 right-8">

@@ -9,7 +9,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 @foreach ($subjects as $subject)
                     <div class="bg-white shadow-lg rounded-lg p-6">
-                        <img src="{{asset('/storage/'.$subject->image)}}" alt="{{ $subject->subject_name }}" class="w-full h-40 object-cover rounded">
+                        <img src="{{asset($subject->image)}}" alt="{{ $subject->subject_name }}" class="w-full h-40 object-cover rounded">
                         <h2 class="text-xl font-bold text-gray-800 mt-4">{{ $subject->semester_name }}</h2>
                         <p class="text-gray-600">Ciclo Escolar: 2024-2025</p>
                         <a href="{{route('materials.index',$subject)}}" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition w-full text-center block">

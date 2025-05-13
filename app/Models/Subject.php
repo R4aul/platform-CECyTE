@@ -32,7 +32,7 @@ class Subject extends Model
                     return Storage::url($this->image_path);
                 }
                 else {
-                    return 'https://img.freepik.com/vector-premium/vector-icono-imagen-predeterminado-pagina-imagen-faltante-diseno-sitio-web-o-aplicacion-movil-no-hay-foto-disponible_87543-11093.jpg?w=900';
+                    return asset('images/not_found.jpg');
                 }
             }
         );
