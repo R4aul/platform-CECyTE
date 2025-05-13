@@ -32,6 +32,7 @@ class User extends Authenticatable
         'email',
         'maternal_surname' ,
         'paternal_surname',
+        'matriculation',
         'password',
     ];
 
@@ -71,5 +72,18 @@ class User extends Authenticatable
 
     public function subjects(){
         return $this->belongsToMany(Subject::class, 'user_subject');
+    }
+
+    public function inscriptions(){//registrations
+        return $this->hasMany(Registration::class);
+    }
+
+    
+    public function inscriptionsActive(){//currentRegistration
+        return $this->hasOne(Registration::class)->where('active',true);
+    }
+
+    public function qualifications(){
+        return $this->hasMany(Qualification::class);
     }
 }

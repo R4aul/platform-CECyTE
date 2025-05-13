@@ -12,6 +12,17 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
+        <!--Texto enriquesido-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.min.js"></script>
+
+       <!--Swet alert 2-->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        @stack('css')
+        
+        <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -25,13 +36,14 @@
             @include('nav-teaching') 
 
             <!-- Contenido principal -->
-            <main class="justify-center w-full p-6">
+            <main class="justify-center w-full">
                 {{ $slot }}
             </main>
         </div>
 
         @stack('modals')
+        @stack('js')
         @livewireScripts
-        
+
     </body>
 </html>

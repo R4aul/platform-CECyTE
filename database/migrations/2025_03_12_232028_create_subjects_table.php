@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
             $table->string('subject_name');
+            $table->string('path_image')->nullable();
             $table->foreignId('semester_id')->constrained();
             $table->timestamps();
         });

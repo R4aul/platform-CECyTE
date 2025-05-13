@@ -35,6 +35,7 @@ class StudentController extends Controller
             'name' => ['required','string'],
             'maternal_surname' => ['required','string'],
             'paternal_surname' => ['required', 'string'],
+            'matriculation' => ['required', 'string', 'max:14'],
             'email' => ['required','string', 'email'],
             'password' => ['required','string'],
         ]);
@@ -42,6 +43,7 @@ class StudentController extends Controller
             'name' => $request->name,
             'maternal_surname' => $request->maternal_surname,
             'paternal_surname' => $request->paternal_surname,
+            'matriculation' => $request->matriculation,
             'email' => $request->email,
             'password' =>Hash::make($request->password),
         ]);
@@ -75,12 +77,14 @@ class StudentController extends Controller
             'name' => ['required','string'],
             'maternal_surname' => ['required','string'],
             'paternal_surname' => ['required', 'string'],
+            'matriculation' => ['required', 'string', 'max:14'],
             'email' => ['required','string', 'email'],
         ]);
         $student->update([
             'name' => $request->name,
             'maternal_surname' => $request->maternal_surname,
             'paternal_surname' => $request->paternal_surname,
+            'matriculation' => $request->matriculation,
             'email' => $request->email,
         ]);
     
