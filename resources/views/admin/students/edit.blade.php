@@ -33,6 +33,15 @@
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
+                <div class="mb-4">
+                    <x-label>
+                        Matricula
+                    </x-label>
+                    <x-input class="w-full" name="matriculation" value="{{old('matriculation',$student->matriculation)}}"/>
+                    @error('matriculation')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
     
                 <div class="mb-4">
                     <x-label>

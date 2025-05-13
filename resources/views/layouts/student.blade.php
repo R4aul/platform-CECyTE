@@ -1,35 +1,54 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Styles -->
-        @livewireStyles
-    </head>
-    <body class="font-sans antialiased">
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-        @include('nav-student')
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
-        <div class="min-h-screen bg-gray-100">
-            <!-- Page Content -->
-            <main>
-                {{$slot}}
-            </main>
-        </div>
+    <!-- Styles -->
+    @livewireStyles
+</head>
 
-        @stack('modals')
+<body class="font-sans antialiased">
 
-        @livewireScripts
-    </body>
+    @include('nav-student')
+
+    <div class="min-h-screen bg-gray-100">
+        <!-- Page Content -->
+        <main>
+            {{ $slot }}
+        </main>
+    </div>
+
+    @stack('modals')
+
+    @livewireScripts
+
+    <!-- CKEditor CDN -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+
+    @stack('js')
+
+</body>
+
 </html>

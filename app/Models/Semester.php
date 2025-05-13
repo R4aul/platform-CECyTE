@@ -11,7 +11,13 @@ class Semester extends Model
     use HasFactory;
 
 
-    public function subjects(){
+    public function subjects()
+    {
         return $this->hasMany(Subject::class);
+    }
+
+    public function registrations()
+    {
+        return $this->hasMany(Registration::class);
     }
 }

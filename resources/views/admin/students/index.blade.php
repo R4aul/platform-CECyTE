@@ -33,6 +33,7 @@
                         <th scope="col" class="px-6 py-3">Nombre</th>
                         <th scope="col" class="px-6 py-3">Apellido Paterno</th>
                         <th scope="col" class="px-6 py-3">Apellido Materno</th>
+                        <th scope="col" class="px-6 py-3">Matricula</th>
                         <th scope="col" class="px-6 py-3">Acciones</th>
                     </tr>
                 </thead>
@@ -48,6 +49,7 @@
                             </th>
                             <td class="px-6 py-4">{{ $student->paternal_surname }}</td>
                             <td class="px-6 py-4">{{ $student->maternal_surname }}</td>
+                            <td class="px-6 py-4">{{ $student->matriculation }}</td>
                             <td class="px-6 py-4">
                                 <a href="{{route('students.edit', $student)}}" class="font-medium text-blue-600 hover:underline">Editar</a>
                             </td>
