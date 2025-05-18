@@ -1,5 +1,6 @@
 <x-app-layout>
     <div class="p-7">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Crear nuevo docente</h1>
         <div class="bg-white rounded shadow-lg p-6">
             <form action="{{ route('teachers.store') }}" method="post">
                 @csrf

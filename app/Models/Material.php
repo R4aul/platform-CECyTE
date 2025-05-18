@@ -11,13 +11,13 @@ class Material extends Model
     /** @use HasFactory<\Database\Factories\MaterialFactory> */
     use HasFactory;
 
-     protected $fillable = ['material_name','material_description', 'body','fileType', 'path', 'subject_id'];
+     protected $fillable = ['material_name','material_description', 'body','fileType', 'path', 'subject_id','user_id'];
 
      public function subject(){
         return $this->belongsTo(Subject::class);
      }
 
      public function tasks(){
-      return $this->belongsToMany(Task::class);
+      return $this->hasMany(Task::class);
      }
 }

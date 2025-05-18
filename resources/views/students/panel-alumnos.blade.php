@@ -1,7 +1,6 @@
 <x-student-layout>
     <div class="min-h-screen bg-gray-100 p-8">
         <div class="max-w-4xl mx-auto grid gap-6 grid-cols-1 md:grid-cols-2">
-
             @forelse ($subjectsMaterials as $index => $subject)
                 <!-- Tarjeta de Materia -->
                 <div>

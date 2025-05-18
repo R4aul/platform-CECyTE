@@ -1,5 +1,6 @@
 <x-app-layout>
     <div class="p-7">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Actualizar cilco escolar</h1>
         <div class="bg-white rounded shadow-lg p-6">
             <form action="{{route('schoolYears.update',$schoolYear)}}" method="post">
                 @csrf
@@ -17,7 +18,7 @@
                     <x-label>
                         Fecha de inicio
                     </x-label>
-                    <x-input class="w-full" name="start_date" type="date" value="{{$schoolYear->start_date}}"/>
+                    <x-input class="w-full" name="start_date" type="date" value="{{\Carbon\Carbon::parse($schoolYear->start_date)->format('Y-m-d')}}"/>
                     @error('start_date')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
@@ -26,7 +27,7 @@
                     <x-label>
                         Fecha de terminacion
                     </x-label>
-                    <x-input class="w-full" name="final_date" type="date" value="{{$schoolYear->final_date}}" />
+                    <x-input class="w-full" name="final_date" type="date" value="{{\Carbon\Carbon::parse($schoolYear->final_date)->format('Y-m-d')}}" />
                     @error('final_date')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
@@ -45,7 +46,7 @@
                 </div>
                 <div class="flex justify-end mt-6">
                     <x-button>
-                        Crear ciclo escolar
+                        Actualizar ciclo escolar
                     </x-button>
                 </div>
             </form>

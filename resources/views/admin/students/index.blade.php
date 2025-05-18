@@ -1,5 +1,6 @@
 <x-app-layout>
     <div class="p-7">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Lista de Alumnos</h1>
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <div class="flex items-center justify-between flex-wrap md:flex-nowrap space-y-4 md:space-y-0 pb-4 bg-white p-4">
                 <!-- Botón Crear Estudiante -->

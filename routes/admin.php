@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\SchoolYearController;
 use App\Http\Controllers\Admin\ChangeGradeController;
 use App\Http\Controllers\Admin\QualificationController;
+use App\Http\Controllers\Admin\TaskController;
 
 Route::resource('/teachers',TeacherController::class)->middleware('auth');
 
@@ -34,3 +35,8 @@ Route::get('/createStudents',function()  {
 })->name('register.students')->middleware('auth');
 
 Route::resource('qualifications',QualificationController::class)->except(['destroy'])->middleware('auth');
+
+Route::prefix('admin')->controller(TaskController::class)->group(function(){
+    Route::get('/{material}/tasks','index')->name('admin.tasks.index');
+    Route::get('/taks/{task}/show', 'show')->name('admin.tasks.show');
+});

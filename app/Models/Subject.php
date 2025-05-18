@@ -24,7 +24,7 @@ class Subject extends Model
             get:function(){
                 if ($this->path_image) {
                     //primero estraigo los primeros 8 caracteres y comparo si esos caracteres son iguales a https:// dosnde si es igual que me traiga esa imagen
-                    return $this->path_image;
+                    return '/storage/'.$this->path_image;
                     if (substr($this->image_path,0,8) === 'https://') {
                         return $this->image_path;
                     }

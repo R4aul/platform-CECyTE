@@ -6,14 +6,20 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Material;
 use App\Models\Subject;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class MaterialController extends Controller
 {
     public function index(Subject $subject)
     {
-        $subject->with('materials');
+        $subject->load([
+            'materials' => function ($query) {
+                $query->where('user_id', Auth::id());
+            },
+        ]);
         return view('admin.materials.index', compact('subject'));
     }
 
@@ -48,7 +54,8 @@ class MaterialController extends Controller
             'body' => $request->body,
             'fileType' => $extension,
             'path' => $path,
-            'subject_id' => $subject->id
+            'subject_id' => $subject->id,
+            'user_id' => Auth::user()->id
         ]);
 
         return view('admin.materials.index', compact('subject'));

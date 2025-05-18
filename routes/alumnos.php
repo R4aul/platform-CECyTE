@@ -7,3 +7,4 @@ use App\Http\Controllers\Student\TaskController;
 Route::get('/panel',[PanelCotroller::class,'index'])->middleware(['auth'])->name('panel.alumnos');
 
 Route::get('/students/{material}/task',[TaskController::class,'create'])->name('students.task.create')->middleware('auth');
+Route::post('/students/{material}/task/store',[TaskController::class,'store'])->name('students.task.store')->middleware('auth');

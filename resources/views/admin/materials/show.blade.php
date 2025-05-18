@@ -22,7 +22,7 @@
             @endif
         </div>
 
-        <div class="flex gap-4">
+        <div class="flex flex-wrap gap-4">
             {{-- Botón editar --}}
             <a href="{{ route('materials.edit', $material) }}"
                 class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
@@ -39,8 +39,14 @@
                 </button>
             </form>
 
+            {{-- Botón ver entregas de alumnos --}}
+            <a href="{{route('admin.tasks.index',$material)}}"
+                class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                Ver entregas de alumnos
+            </a>
         </div>
     </div>
+
     @push('js')
         <script>
             function confirmDelete() {

@@ -16,7 +16,7 @@ class ChangeGradeController extends Controller
     {
         $cicloActivo = SchoolYear::where('active', true)->first();
 
-        $alumnos = User::role('alumno')->has('inscriptions')->with(['inscriptionsActive.semester'])->get();
+        $alumnos = User::role('Alumno')->has('inscriptions')->with(['inscriptionsActive.semester'])->get();
         return view('admin.grades.index', compact('cicloActivo', 'alumnos'));
     }
     public function advanceStudent($id)
