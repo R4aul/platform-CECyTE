@@ -33,18 +33,18 @@ class DatabaseSeeder extends Seeder
         ])->assignRole('Docente');
 
         User::factory()->create([
-            'name' => 'User Test 1',
-            'paternal_surname' => 'Escobar',
-            'maternal_surname' => 'Hernandez',
+            'name' => 'Andrea Guadalupe',
+            'paternal_surname' => 'Rodriguez',
+            'maternal_surname' => 'Resendiz',
             'email' => 'andrearesendizbod@gmail.com',
             'password' => 'Rora031020MH$',
         ])->assignRole('Docente');
 
         $student = User::factory()->create([
-            'name' => 'User Test 2',
+            'name' => 'Jose',
             'maternal_surname' => 'Corona',
             'paternal_surname' => 'Hernandez',
-            'matriculation' => 'F89382047182934',
+            'matriculation' => 'password',
             'email' => 'test2@example.com',
             'password' => 'password',
         ])->assignRole('Alumno');
@@ -62,7 +62,7 @@ class DatabaseSeeder extends Seeder
             'active' => true
         ]);
         Partial::create([
-            'number' => 'Segun parcial',
+            'number' => 'Segundo parcial',
             'semester_id' => 1,
             'active' => true
         ]);
