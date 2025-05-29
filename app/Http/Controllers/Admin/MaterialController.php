@@ -34,7 +34,8 @@ class MaterialController extends Controller
             'name' => ['required', 'string'],
             'description' => ['required', 'string'],
             'body' => ['required', 'string'],
-            'file' => ['required', 'file', 'mimes:png,jpg,jpeg,pdf']
+            'file' => ['required', 'file', 'mimes:png,jpg,jpeg,pdf'],
+            'active' => ['boolean'],
         ]);
 
         $subjectFile = Str::slug($subject->subject_name, '_');
@@ -52,6 +53,7 @@ class MaterialController extends Controller
             'material_name' => $request->name,
             'material_description' => $request->description,
             'body' => $request->body,
+            'active' => $request->active ?  1 : 0,
             'fileType' => $extension,
             'path' => $path,
             'subject_id' => $subject->id,
@@ -73,57 +75,68 @@ class MaterialController extends Controller
 
     public function update(Material $material, Request $request)
     {
-        $subject = $material->subject;
-
-        // Validar datos
-        $validated = $request->validate([
-            'material_name' => 'required|string|max:255',
-            'material_description' => 'nullable|string',
-            'file' => 'nullable|file|mimes:jpg,jpeg,png,pdf,docx|max:2048', // imagen o documento
+        $request->validate([
+            'name' => ['required', 'string'],
+            'description' => ['required', 'string'],
+            'body' => ['required', 'string'],
+            'file' => ['nullable', 'file', 'mimes:png,jpg,jpeg,pdf'],
+            'active' => ['boolean'],
         ]);
 
-        // Si el usuario sube un nuevo archivo
+        $subject = $material->subject;
+
+        $material->material_name = $request->name;
+        $material->material_description = $request->description;
+        $material->body = $request->body;
+        $material->active = $request->active ? 1 : 0;
+
         if ($request->hasFile('file')) {
+            $subjectFile = Str::slug($subject->subject_name, '_');
+            $file = $request->file('file');
+            $extension = $file->getClientOriginalExtension();
+            $typeFile = in_array($extension, ['jpg', 'png', 'jpeg']) ? 'imagenes' : 'documentos';
 
-            // Borrar el archivo anterior si existía
-            if ($material->path) {
-                $oldPath = str_replace('/storage/', '', $material->path);
-
-                if (Storage::disk('public')->exists($oldPath)) {
-                    Storage::disk('public')->delete($oldPath);
-                }
+            // Eliminar archivo anterior si es necesario
+            if ($material->path && Storage::disk('public')->exists(str_replace('/storage/', '', $material->path))) {
+                Storage::disk('public')->delete(str_replace('/storage/', '', $material->path));
             }
 
-            // Subir el nuevo archivo
-            $file = $request->file('file');
-            $newPath = $file->store('materias/' . $subject->subject_slug . '/imagenes', 'public');
-
-            // Actualizar el path y fileType
-            $material->path = '/storage/' . $newPath;
-            $material->fileType = $file->getClientMimeType(); // Aquí guardamos el tipo de archivo
+            $pathFolder = "materias/{$subjectFile}/{$typeFile}";
+            $nameFile = uniqid() . '.' . $extension;
+            $pathFile = $file->storeAs($pathFolder, $nameFile, 'public');
+            $material->path = Storage::url($pathFile);
+            $material->fileType = $extension;
         }
 
-        // Actualizar otros campos
-        $material->material_name = $validated['material_name'];
-        $material->material_description = $validated['material_description'] ?? null;
-
         $material->save();
-        return view('admin.materials.edit', compact('material'));
+        return redirect()->route('dashboard');
     }
 
     public function destroy(Material $material)
     {
         $subject = $material->subject;
 
-        if ($material->path) {
-            $path = str_replace('/storage/', '', $material->path); // quitar el '/storage/'
+        // Eliminar archivos de las tareas relacionadas
+        foreach ($material->tasks as $task) {
+            if ($task->path_task) {
+                $taskPath = str_replace('/storage/', '', $task->path_task);
+                if (Storage::disk('public')->exists($taskPath)) {
+                    Storage::disk('public')->delete($taskPath);
+                }
+            }
+            $task->delete(); // eliminar el registro de la tarea
+        }
 
+        // Eliminar archivo del material
+        if ($material->path) {
+            $path = str_replace('/storage/', '', $material->path);
             if (Storage::disk('public')->exists($path)) {
                 Storage::disk('public')->delete($path);
             }
         }
 
-        $material->delete();
+        $material->delete(); // eliminar el registro del material
+
         return redirect()->route('materials.index', $subject);
     }
 }

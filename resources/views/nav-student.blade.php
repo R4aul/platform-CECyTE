@@ -10,8 +10,8 @@
             <!-- Menú para pantallas grandes -->
             <div class="hidden md:flex space-x-6">
                 <a href="{{route('panel.alumnos')}}" class="hover:text-gray-300 transition">Inicio</a>
-                <a href="#" class="hover:text-gray-300 transition">Calificaciones</a>
-                <a href="#" class="hover:text-gray-300 transition">Mi Perfil</a>
+                <a href="{{route('students.qualifications.index')}}" class="hover:text-gray-300 transition">Calificaciones</a>
+                <a href="{{route('profile.show')}}" class="hover:text-gray-300 transition">Configuración</a>
             </div>
 
             <!-- Menú de usuario -->
@@ -43,9 +43,8 @@
             <span class="text-lg font-semibold">Mi Plataforma</span>
         </div>
         <a href="{{route('panel.alumnos')}}" class="block px-4 py-2 hover:bg-gray-700">Dashboard</a>
-        <a href="#" class="block px-4 py-2 hover:bg-gray-700">Mis Cursos</a>
-        <a href="#" class="block px-4 py-2 hover:bg-gray-700">Calificaciones</a>
-        <a href="#" class="block px-4 py-2 hover:bg-gray-700">Mi Perfil</a>
+        <a href="{{route('students.qualifications.index')}}" class="block px-4 py-2 hover:bg-gray-700">Calificaciones</a>
+        <a href="{{route('profile.show')}}" class="block px-4 py-2 hover:bg-gray-700">Mi Perfil</a>
         @auth
             <div class="px-4 py-2 text-gray-300">Hola, {{ Auth::user()->name }}</div>
             <form action="{{ route('logout') }}" method="POST" class="block px-4 py-2">

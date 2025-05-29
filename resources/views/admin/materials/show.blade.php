@@ -40,10 +40,15 @@
             </form>
 
             {{-- Botón ver entregas de alumnos --}}
-            <a href="{{route('admin.tasks.index',$material)}}"
-                class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-                Ver entregas de alumnos
+            <a href="{{ route('admin.tasks.index', $material) }}"
+                class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 inline-flex items-center space-x-2">
+                <span>Ver entregas de alumnos</span>
+                <span
+                    class="bg-white text-green-600 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">
+                    {{ $material->tasks->count() }}
+                </span>
             </a>
+
         </div>
     </div>
 

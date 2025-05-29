@@ -14,6 +14,16 @@ class TaskController extends Controller
 {
     public function create(Material $material)
     {
+        $userId = Auth::id();
+
+        $existingTask = $material->tasks()
+            ->where('user_id', $userId)
+            ->first();
+
+        if ($existingTask) {
+            return redirect()->back()->with('error', 'Ya has entregado la actividad.');
+        }
+
         return view('students.task.create', compact('material'));
     }
 

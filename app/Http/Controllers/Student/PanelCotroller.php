@@ -15,7 +15,11 @@ class PanelCotroller extends Controller
 
         $subjectsMaterials = Subject::where('semester_id', $studentSemesterId)
             ->whereHas('materials')
-            ->with('materials')
+            ->with([
+                'materials'=>function($query){
+                    $query->where('active',true);
+                }
+            ])
             ->get();
 
         return view('students.panel-alumnos', compact('subjectsMaterials'));

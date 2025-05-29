@@ -17,6 +17,6 @@ class TaskController extends Controller
     }
 
     public function show(Task $task){
-
-    }
+        return view('admin.tasks.show',compact('task'));
+   }
 }

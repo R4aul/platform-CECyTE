@@ -86,4 +86,8 @@ class User extends Authenticatable
     public function qualifications(){
         return $this->hasMany(Qualification::class);
     }
+
+    public function task(){
+        return $this->hasMany(Task::class);
+    }
 }

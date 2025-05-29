@@ -14,7 +14,8 @@
                         </h2>
 
                         {{-- Descripción o cuerpo de la tarea --}}
-                        <p class="text-gray-700 mb-3">{{ $task->body }}</p>
+                        {{-- <p class="text-gray-700 mb-3">{{ $task->body }}</p> --}}
+                        <p class="text-gray-700 mb-3">Fecha de creación {{ $task->formatDate }}</p>
 
                         {{-- Vista previa del archivo --}}
                         <div class="mb-4">
@@ -27,11 +28,20 @@
                             @endif
                         </div>
 
-                        {{-- Botón para descargar --}}
-                        <a href="{{ asset($task->path_task) }}" download
-                            class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                            Descargar archivo
-                        </a>
+                        <div class="flex space-x-2">
+                            {{-- Botón para mostrar --}}
+                            <a href="{{ route('admin.tasks.show', $task) }}"
+                                class="inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                                Mostrar
+                            </a>
+
+                            {{-- Botón para descargar --}}
+                            <a href="{{ asset($task->path_task) }}" download
+                                class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                Descargar
+                            </a>
+                        </div>
+
                     </div>
                 @endforeach
             </div>
