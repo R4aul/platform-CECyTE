@@ -16,9 +16,15 @@ class QualificationController extends Controller
      */
     public function index()
     {
+        $search = request('search');
+
         $alumnos = User::whereHas("roles", function($q) {
             $q->where("name", "Alumno");
-        })->with(['qualifications.subject', 'qualifications.partial'])->get();
+        })
+        ->when($search, function ($query, $search) {
+            $query->where('matriculation', 'like', '%' . $search . '%');
+        })
+        ->with(['qualifications.subject', 'qualifications.partial'])->get();
 
         $materias = Subject::with('semester')->get();
         $parciales = Partial::where('active', true)->get();

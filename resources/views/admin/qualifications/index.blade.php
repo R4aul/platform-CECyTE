@@ -4,7 +4,7 @@
 
         <!-- Formulario de búsqueda -->
         <div class="mb-6 bg-gray-50 p-6 rounded-lg shadow-md">
-            <form action="#" method="GET" class="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <form action="{{route('qualifications.index')}}" method="GET" class="grid grid-cols-1 gap-4 md:grid-cols-3">
                 <div class="flex flex-col">
                     <label for="search" class="text-gray-700 font-medium mb-2">Matricula</label>
                     <input type="text" name="search" id="search" placeholder="Buscar por matricula..."
