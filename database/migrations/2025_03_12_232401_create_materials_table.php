@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('material_name');
             $table->string('material_description');
-            $table->string('body');
+            $table->longText('body');
             $table->string('fileType');
             $table->string('path');
             $table->foreignId('subject_id')->constrained();

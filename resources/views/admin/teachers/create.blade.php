@@ -54,14 +54,33 @@
                     @enderror
                 </div>
 
+
+                <div class="mb-4">
+                    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900">Select an option</label>
+                    <select id="countries" name="role"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option selected>Escoje un Rol</option>
+                        <option value="Administrador">Administrador</option>
+                        <option value="Docente">Docente</option>
+                    </select>
+                    @error('role')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+
+                </div>
+
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     @foreach ($semesters as $semester)
                         <div class="border p-4 rounded-lg">
-                            <h3 class="text-lg font-semibold">{{ $semester->semester_name }} ({{ $semester->period }})</h3>
+                            <h3 class="text-lg font-semibold">{{ $semester->semester_name }} ({{ $semester->period }})
+                            </h3>
                             @foreach ($semester->subjects as $subject)
                                 <div class="flex items-center mt-2">
-                                    <input type="checkbox" name="subjects[]" value="{{ $subject->id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2">
-                                    <label class="ms-2 text-sm font-medium text-gray-900">{{ $subject->subject_name }}</label>
+                                    <input type="checkbox" name="subjects[]" value="{{ $subject->id }}"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2">
+                                    <label
+                                        class="ms-2 text-sm font-medium text-gray-900">{{ $subject->subject_name }}</label>
                                 </div>
                             @endforeach
                         </div>

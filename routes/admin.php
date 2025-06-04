@@ -44,7 +44,7 @@ Route::post('/semesters/advanceStudent/{id}',[ChangeGradeController::class,'adva
 
 Route::get('/createStudents',function()  {
     return view('admin.register.create');    
-})->name('register.students')->middleware('auth');
+})->name('register.students')->middleware(['auth','can:register.students']);
 
 Route::resource('qualifications',QualificationController::class)
     ->except(['destroy','show','edit','update'])

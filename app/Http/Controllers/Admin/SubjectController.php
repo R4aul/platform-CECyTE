@@ -5,9 +5,21 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Subject;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class SubjectController extends Controller
+class SubjectController extends Controller implements HasMiddleware
 {
+    public static function middleware()
+    {
+        return [
+            'auth', // obligatorio para todo el controlador
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('subjects.index'), only: ['index']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('subjects.edit'), only: ['create']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('subjects.update'), only: ['store']),
+        ];
+    }
+
     public function index()
     {
         $subjects = Subject::all();

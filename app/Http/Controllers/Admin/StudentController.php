@@ -6,9 +6,24 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class StudentController extends Controller
+class StudentController extends Controller implements HasMiddleware
 {
+    public static function middleware()
+    {
+        return [
+            'auth', // obligatorio para todo el controlador
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('students.index'), only:['index']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('students.create'), only:['create']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('students.store'), only:['store']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('students.edit'), only:['edit']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('students.update'), only:['update']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('students.destroy'), only:['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -96,6 +111,7 @@ class StudentController extends Controller
      */
     public function destroy(User $student)
     {
-        //
+        $student->delete();
+        return redirect()->route('students.index');
     }
 }

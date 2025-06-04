@@ -5,9 +5,22 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SchoolYear;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class SchoolYearController extends Controller
+class SchoolYearController extends Controller implements HasMiddleware
 {
+    public static function middleware()
+    {
+        return [
+            'auth', // obligatorio para todo el controlador
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('schoolYears.index'), only: ['index']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('schoolYears.create'), only: ['create']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('schoolYears.store'), only: ['store']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('schoolYears.edit'), only: ['edit']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('schoolYears.update'), only: ['update']),
+        ];
+    }
     /**
      * Display a listing of the resource.
      */

@@ -9,8 +9,13 @@
 
             <!-- Menú para pantallas grandes -->
             <div class="hidden md:flex space-x-6">
+                @can('panel.alumnos')
                 <a href="{{route('panel.alumnos')}}" class="hover:text-gray-300 transition">Inicio</a>
+                @endcan
+                @can('students.qualifications.index')
                 <a href="{{route('students.qualifications.index')}}" class="hover:text-gray-300 transition">Calificaciones</a>
+                    
+                @endcan
                 <a href="{{route('profile.show')}}" class="hover:text-gray-300 transition">Configuración</a>
             </div>
 

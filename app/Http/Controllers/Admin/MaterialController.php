@@ -10,9 +10,26 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class MaterialController extends Controller
+class MaterialController extends Controller implements HasMiddleware
 {
+
+    public static function middleware()
+    {
+        return [
+            'auth', // obligatorio para todo el controlador
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('materials.index'), only: ['index']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('materials.create'), only: ['create']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('materials.store'), only: ['store']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('materials.edit'), only: ['edit']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('materials.update'), only: ['update']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('materials.show'), only: ['show']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('materials.destroy'), only: ['destroy']),
+        ];
+    }
+
     public function index(Subject $subject)
     {
         $subject->load([

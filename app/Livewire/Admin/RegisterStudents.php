@@ -11,27 +11,36 @@ use App\Models\Semester;
 
 class RegisterStudents extends Component
 {
-    public $alumnos = [];
+    public $nuevoAlumno = [
+        'name' => '',
+        'paternal_surname' => '',
+        'maternal_surname' => '',
+        'matriculation' => '',
+        'email' => '',
+        'password' => '',
+        'semester_id' => '',
+        'school_year_id' => ''
+    ];
 
-    public function mount()
-    {
-        $this->alumnos = [
-            [
-                'name' => '',
-                'paternal_surname' => '',
-                'maternal_surname' => '',
-                'matriculation' => '',
-                'email' => '',
-                'password' => '',
-                'semester_id' => '',
-                'school_year_id' => ''
-            ]
-        ];
-    }
+    public $alumnos = [];
 
     public function addAlumno()
     {
-        $this->alumnos[] = [
+        $this->validate([
+            'nuevoAlumno.name' => 'required|string|max:100',
+            'nuevoAlumno.paternal_surname' => 'required|string|max:100',
+            'nuevoAlumno.maternal_surname' => 'required|string|max:100',
+            'nuevoAlumno.matriculation' => 'required|string|max:14',
+            'nuevoAlumno.email' => 'required|email|unique:users,email',
+            'nuevoAlumno.password' => 'required|string|min:8',
+            'nuevoAlumno.semester_id' => 'required',
+            'nuevoAlumno.school_year_id' => 'required',
+        ]);
+
+        $this->alumnos[] = $this->nuevoAlumno;
+
+        // Limpiar los campos del formulario
+        $this->nuevoAlumno = [
             'name' => '',
             'paternal_surname' => '',
             'maternal_surname' => '',
@@ -41,6 +50,9 @@ class RegisterStudents extends Component
             'semester_id' => '',
             'school_year_id' => ''
         ];
+
+        $this->resetErrorBag(); // Limpia errores por campo
+        $this->resetValidation(); // Limpia errores de validación previos
     }
 
     public function removeAlumno($index)
@@ -51,30 +63,29 @@ class RegisterStudents extends Component
 
     public function submit()
     {
-        //return dd($this->alumnos);
-        $this->validate([   
+        $this->validate([
             'alumnos.*.name' => 'required|string|max:100',
             'alumnos.*.paternal_surname' => 'required|string|max:100',
             'alumnos.*.maternal_surname' => 'required|string|max:100',
             'alumnos.*.matriculation' => 'required|string|max:14',
             'alumnos.*.email' => 'required|email|unique:users,email',
             'alumnos.*.password' => 'required|string|min:8',
-            'alumnos.*semester_id' => 'required',
-            'alumnos.*school_year_id' => 'requider'
+            'alumnos.*.semester_id' => 'required',
+            'alumnos.*.school_year_id' => 'required'
         ]);
 
         foreach ($this->alumnos as $alumno) {
-            $newStudent = User::create([
+            $user = User::create([
                 'name' => $alumno['name'],
                 'paternal_surname' => $alumno['paternal_surname'],
                 'maternal_surname' => $alumno['maternal_surname'],
                 'matriculation' => $alumno['matriculation'],
                 'email' => $alumno['email'],
-                'password' => Hash::make($alumno['password']), // puedes enviar luego el password por email
+                'password' => Hash::make($alumno['password']),
             ])->assignRole('Alumno');
 
             Registration::create([
-                'user_id' => $newStudent->id,
+                'user_id' => $user->id,
                 'semester_id' => $alumno['semester_id'],
                 'school_year_id' => $alumno['school_year_id'],
                 'registration_date' => now(),
@@ -82,16 +93,15 @@ class RegisterStudents extends Component
             ]);
         }
 
+        $this->alumnos = [];
         session()->flash('success', 'Alumnos registrados exitosamente.');
-        $this->mount(); // reiniciar el formulario
     }
-
 
     public function render()
     {
-        $semesters = Semester::all();
-        $schoolYears = SchoolYear::where('active', true)->get();
-
-        return view('livewire.admin.register-students', compact('semesters', 'schoolYears'));
+        return view('livewire.admin.register-students', [
+            'semesters' => Semester::all(),
+            'schoolYears' => SchoolYear::where('active', true)->get()
+        ]);
     }
 }

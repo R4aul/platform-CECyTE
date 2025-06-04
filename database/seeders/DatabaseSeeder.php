@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
             'maternal_surname' => 'Hernandez',
             'email' => 'test@example.com',
             'password' => 'password',
-        ])->assignRole('Docente');
+        ])->assignRole('Administrador');
 
         User::factory()->create([
             'name' => 'Andrea Guadalupe',
@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
             'maternal_surname' => 'Resendiz',
             'email' => 'andrearesendizbod@gmail.com',
             'password' => 'Rora031020MH$',
-        ])->assignRole('Docente');
+        ])->assignRole('Administrador');
 
         $student = User::factory()->create([
             'name' => 'Jose',

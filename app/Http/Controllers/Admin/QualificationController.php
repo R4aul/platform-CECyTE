@@ -8,9 +8,22 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Subject;
 use App\Models\Partial;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class QualificationController extends Controller
+class QualificationController extends Controller implements HasMiddleware
 {
+
+    public static function middleware()
+    {
+        return [
+            'auth', // obligatorio para todo el controlador
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('materials.index'), only: ['index']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('materials.create'), only: ['create']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('materials.store'), only: ['store']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

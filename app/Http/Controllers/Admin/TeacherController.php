@@ -8,15 +8,28 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class TeacherController extends Controller
+class TeacherController extends Controller implements HasMiddleware
 {
+    public static function middleware()
+    {
+        return [
+            'auth', // obligatorio para todo el controlador
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('teachers.index'), only:['index']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('teachers.create'), only:['create']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('teachers.store'), only:['store']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('teachers.edit'), only:['edit']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('teachers.update'), only:['update']),
+        ];
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $teachers = User::role('Docente')->get();
+        $teachers = User::role(['Docente', 'Administrador'])->get();
         return view('admin.teachers.index', compact('teachers'));  
     }
 
@@ -40,6 +53,7 @@ class TeacherController extends Controller
             'paternal_surname' =>['string'] ,
             'email' => ['string','email'],
             'subjects' => 'required|array',
+            'role' => 'required|exists:roles,name',
         ]);
 
         $user = User::create([
@@ -50,7 +64,7 @@ class TeacherController extends Controller
             'password' =>Hash::make($request->password),
         ]);
         
-        $user->assignRole('Docente');
+        $user->assignRole($request->role);
         $user->subjects()->attach($request->subjects);
         
         return redirect()->route('teachers.index');
@@ -85,6 +99,7 @@ class TeacherController extends Controller
             'paternal_surname' =>['string'] ,
             'email' => ['required','string','email','max:255',"unique:users,email,{$teacher->id}"],
             'subjects' => 'required|array',
+            'role' => 'required|exists:roles,name',
         ]);
         
         $teacher->name = $request->name;
@@ -98,6 +113,8 @@ class TeacherController extends Controller
             'paternal_surname' => $request->paternal_surname ,
             'email' => $request->email,
         ]);
+
+        $teacher->syncRoles([$request->role]);
         
         $teacher->subjects()->sync($request->subjects);
         

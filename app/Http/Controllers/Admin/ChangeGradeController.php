@@ -9,9 +9,20 @@ use App\Models\Semester;
 use App\Models\Registration;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class ChangeGradeController extends Controller
+class ChangeGradeController extends Controller implements HasMiddleware
 {
+    public static function middleware()
+    {
+        return [
+            'auth', // obligatorio para todo el controlador
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('semesters.index'), only: ['index']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('semesters.advanceStudent'), only: ['advanceStudent']),
+        ];
+    }
+
     public function index()
     {
         $cicloActivo = SchoolYear::where('active', true)->first();

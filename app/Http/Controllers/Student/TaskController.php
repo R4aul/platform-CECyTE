@@ -9,9 +9,21 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class TaskController extends Controller
+class TaskController extends Controller implements HasMiddleware
 {
+
+    public static function middleware()
+    {
+        return [
+            'auth', // obligatorio para todo el controlador
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('students.task.create'), only: ['create']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('students.task.store'), only: ['store']),
+        ];
+    }
+
     public function create(Material $material)
     {
         $userId = Auth::id();

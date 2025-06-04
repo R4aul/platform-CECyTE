@@ -2,130 +2,87 @@
     <h2 class="text-3xl font-semibold text-gray-800 mb-6">Registrar Alumnos</h2>
 
     @if (session()->has('success'))
-        <div class="bg-green-50 text-green-700 border border-green-200 p-3 rounded-lg mb-6 text-sm">
+        <div class="bg-green-100 text-green-800 border border-green-200 p-4 rounded mb-6">
             {{ session('success') }}
         </div>
     @endif
 
-    <form wire:submit.prevent="submit" class="space-y-6">
-        @foreach ($alumnos as $index => $alumno)
-            <div class="bg-white shadow-md rounded-lg p-6 space-y-4 border">
-                <div class="flex justify-between items-center mb-2">
-                    <h3 class="text-xl font-medium text-gray-700">Alumno #{{ $index + 1 }}</h3>
-                    @if ($index > 0)
-                        <button type="button"
-                            class="text-red-500 hover:text-red-600 text-sm font-semibold"
-                            wire:click="removeAlumno({{ $index }})">
-                            Eliminar
-                        </button>
-                    @endif
-                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-600">Nombre</label>
-                        <input type="text" placeholder="Nombre"
-                            class="w-full bg-gray-50 border border-gray-300 rounded-md px-3 py-2 text-base"
-                            wire:model="alumnos.{{ $index }}.name">
-                        @error("alumnos.$index.name")
-                            <span class="text-red-500 text-xs">{{ $message }}</span>
-                        @enderror
-                    </div>
+    <form wire:submit.prevent="addAlumno"
+        class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-6 rounded-lg border shadow mb-6">
+        <input type="text" placeholder="Nombre" wire:model.live="nuevoAlumno.name" class="input">
+        <input type="text" placeholder="Apellido Paterno" wire:model.live="nuevoAlumno.paternal_surname" class="input">
+        <input type="text" placeholder="Apellido Materno" wire:model.live="nuevoAlumno.maternal_surname" class="input">
+        <input type="text" placeholder="Matrícula" wire:model.live="nuevoAlumno.matriculation" class="input">
+        <input type="email" placeholder="Correo" wire:model.live="nuevoAlumno.email" class="input">
+        <input type="password" placeholder="Contraseña" wire:model.live="nuevoAlumno.password" class="input">
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-600">Apellido Paterno</label>
-                        <input type="text" placeholder="Apellido Paterno"
-                            class="w-full bg-gray-50 border border-gray-300 rounded-md px-3 py-2 text-base"
-                            wire:model="alumnos.{{ $index }}.paternal_surname">
-                        @error("alumnos.$index.paternal_surname")
-                            <span class="text-red-500 text-xs">{{ $message }}</span>
-                        @enderror
-                    </div>
+        <select wire:model.live="nuevoAlumno.semester_id" class="input">
+            <option value="">Selecciona un semestre</option>
+            @foreach ($semesters as $semester)
+                <option value="{{ $semester->id }}">{{ $semester->semester_name }}</option>
+            @endforeach
+        </select>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-600">Apellido Materno</label>
-                        <input type="text" placeholder="Apellido Materno"
-                            class="w-full bg-gray-50 border border-gray-300 rounded-md px-3 py-2 text-base"
-                            wire:model="alumnos.{{ $index }}.maternal_surname">
-                        @error("alumnos.$index.maternal_surname")
-                            <span class="text-red-500 text-xs">{{ $message }}</span>
-                        @enderror
-                    </div>
+        <select wire:model.live="nuevoAlumno.school_year_id" class="input">
+            <option value="">Selecciona el ciclo escolar</option>
+            @foreach ($schoolYears as $schoolYear)
+                <option value="{{ $schoolYear->id }}">{{ $schoolYear->name }}</option>
+            @endforeach
+        </select>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-600">Matrícula</label>
-                        <input type="text" placeholder="Matrícula"
-                            class="w-full bg-gray-50 border border-gray-300 rounded-md px-3 py-2 text-base"
-                            wire:model="alumnos.{{ $index }}.matriculation">
-                        @error("alumnos.$index.matriculation")
-                            <span class="text-red-500 text-xs">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-600">Correo</label>
-                        <input type="email" placeholder="Correo"
-                            class="w-full bg-gray-50 border border-gray-300 rounded-md px-3 py-2 text-base"
-                            wire:model="alumnos.{{ $index }}.email">
-                        @error("alumnos.$index.email")
-                            <span class="text-red-500 text-xs">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-600">Contraseña</label>
-                        <input type="password" placeholder="Contraseña"
-                            class="w-full bg-gray-50 border border-gray-300 rounded-md px-3 py-2 text-base"
-                            wire:model="alumnos.{{ $index }}.password">
-                        @error("alumnos.$index.password")
-                            <span class="text-red-500 text-xs">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-600">Semestre</label>
-                        <select
-                            class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-md px-3 py-2"
-                            wire:model="alumnos.{{ $index }}.semester_id">
-                            <option value="">Selecciona un semestre</option>
-                            @foreach ($semesters as $semester)
-                                <option value="{{ $semester->id }}">{{ $semester->semester_name }}</option>
-                            @endforeach
-                        </select>
-                        @error("alumnos.$index.semester_id")
-                            <span class="text-red-500 text-xs">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-600">Ciclo escolar</label>
-                        <select
-                            class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-md px-3 py-2"
-                            wire:model="alumnos.{{ $index }}.school_year_id">
-                            <option value="">Selecciona el ciclo escolar</option>
-                            @foreach ($schoolYears as $schoolYear)
-                                <option value="{{ $schoolYear->id }}">{{ $schoolYear->name }}</option>
-                            @endforeach
-                        </select>
-                        @error("alumnos.$index.school_year_id")
-                            <span class="text-red-500 text-xs">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-            </div>
-        @endforeach
-
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-4">
-            <button type="button"
-                class="bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 px-5 py-2 rounded-lg text-sm font-medium"
-                wire:click="addAlumno">
-                + Agregar alumno
-            </button>
-
-            <button type="submit"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm shadow font-medium">
-                Registrar alumnos
+        <div class="col-span-2">
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">
+                Agregar a la lista
             </button>
         </div>
+
+        {{$errors}}
     </form>
+
+    @if (count($alumnos))
+        <div class="bg-white border rounded-lg shadow p-4">
+            <h3 class="text-lg font-semibold mb-4">Alumnos por registrar</h3>
+            <table class="w-full table-auto border-collapse text-sm">
+                <thead>
+                    <tr class="bg-gray-100 text-left">
+                        <th class="px-4 py-2">Nombre completo</th>
+                        <th class="px-4 py-2">Matrícula</th>
+                        <th class="px-4 py-2">Correo</th>
+                        <th class="px-4 py-2">Semestre</th>
+                        <th class="px-4 py-2">Ciclo</th>
+                        <th class="px-4 py-2">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($alumnos as $index => $alumno)
+                        <tr>
+                            <td class="px-4 py-2">{{ $alumno['name'] }} {{ $alumno['paternal_surname'] }}
+                                {{ $alumno['maternal_surname'] }}</td>
+                            <td class="px-4 py-2">{{ $alumno['matriculation'] }}</td>
+                            <td class="px-4 py-2">{{ $alumno['email'] }}</td>
+                            <td class="px-4 py-2">
+                                {{ $semesters->firstWhere('id', $alumno['semester_id'])?->semester_name }}
+                            </td>
+                            <td class="px-4 py-2">
+                                {{ $schoolYears->firstWhere('id', $alumno['school_year_id'])?->name }}
+                            </td>
+                            <td class="px-4 py-2">
+                                <button wire:click="removeAlumno({{ $index }})"
+                                    class="text-red-600 hover:underline text-xs">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+            <div class="mt-4">
+                <button wire:click="submit" class="bg-green-600 text-white px-6 py-2 rounded shadow hover:bg-green-700">
+                    Registrar alumnos
+                </button>
+            </div>
+        </div>
+    @endif
 </div>
