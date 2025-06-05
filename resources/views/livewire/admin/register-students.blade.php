@@ -7,15 +7,14 @@
         </div>
     @endif
 
-
     <form wire:submit.prevent="addAlumno"
         class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-6 rounded-lg border shadow mb-6">
-        <input type="text" placeholder="Nombre" wire:model.live="nuevoAlumno.name" class="input">
-        <input type="text" placeholder="Apellido Paterno" wire:model.live="nuevoAlumno.paternal_surname" class="input">
-        <input type="text" placeholder="Apellido Materno" wire:model.live="nuevoAlumno.maternal_surname" class="input">
-        <input type="text" placeholder="Matrícula" wire:model.live="nuevoAlumno.matriculation" class="input">
-        <input type="email" placeholder="Correo" wire:model.live="nuevoAlumno.email" class="input">
-        <input type="password" placeholder="Contraseña" wire:model.live="nuevoAlumno.password" class="input">
+        <x-input placeholder="Nombre" wire:model.live="nuevoAlumno.name" />
+        <x-input placeholder="Apellido Paterno" wire:model.live="nuevoAlumno.paternal_surname" />
+        <x-input placeholder="Apellido Materno" wire:model.live="nuevoAlumno.maternal_surname" />
+        <x-input placeholder="Matricula" wire:model.live="nuevoAlumno.matriculation" />
+        <x-input placeholder="Email" wire:model.live="nuevoAlumno.email" />
+        <x-input type="password" placeholder="Contraseña" wire:model.live="nuevoAlumno.password" />
 
         <select wire:model.live="nuevoAlumno.semester_id" class="input">
             <option value="">Selecciona un semestre</option>
@@ -31,13 +30,31 @@
             @endforeach
         </select>
 
+        {{-- Lista de errores estéticamente integrada --}}
+        @if ($errors->any())
+            <div class="col-span-2">
+                <div class="bg-red-50 border border-red-300 text-red-800 rounded-lg p-4 shadow-sm">
+                    <div class="font-semibold text-red-700 mb-2 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 9v2m0 4h.01M12 5c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8z" />
+                        </svg>
+                        Se encontraron los siguientes errores:
+                    </div>
+                    <ul class="list-disc list-inside space-y-1 text-sm">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        @endif
+
         <div class="col-span-2">
             <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">
                 Agregar a la lista
             </button>
         </div>
-
-        {{$errors}}
     </form>
 
     @if (count($alumnos))
@@ -79,7 +96,8 @@
             </table>
 
             <div class="mt-4">
-                <button wire:click="submit" class="bg-green-600 text-white px-6 py-2 rounded shadow hover:bg-green-700">
+                <button wire:click="submit"
+                    class="bg-green-600 text-white px-6 py-2 rounded shadow hover:bg-green-700">
                     Registrar alumnos
                 </button>
             </div>

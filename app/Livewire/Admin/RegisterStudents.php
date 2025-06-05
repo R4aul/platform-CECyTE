@@ -97,6 +97,32 @@ class RegisterStudents extends Component
         session()->flash('success', 'Alumnos registrados exitosamente.');
     }
 
+    /**
+     * Personalización de nombres de campos para errores.
+     */
+    protected function validationAttributes()
+    {
+        return [
+            'nuevoAlumno.name' => 'nombre',
+            'nuevoAlumno.paternal_surname' => 'apellido paterno',
+            'nuevoAlumno.maternal_surname' => 'apellido materno',
+            'nuevoAlumno.matriculation' => 'matrícula',
+            'nuevoAlumno.email' => 'correo electrónico',
+            'nuevoAlumno.password' => 'contraseña',
+            'nuevoAlumno.semester_id' => 'semestre',
+            'nuevoAlumno.school_year_id' => 'ciclo escolar',
+
+            'alumnos.*.name' => 'nombre',
+            'alumnos.*.paternal_surname' => 'apellido paterno',
+            'alumnos.*.maternal_surname' => 'apellido materno',
+            'alumnos.*.matriculation' => 'matrícula',
+            'alumnos.*.email' => 'correo electrónico',
+            'alumnos.*.password' => 'contraseña',
+            'alumnos.*.semester_id' => 'semestre',
+            'alumnos.*.school_year_id' => 'ciclo escolar',
+        ];
+    }
+
     public function render()
     {
         return view('livewire.admin.register-students', [
