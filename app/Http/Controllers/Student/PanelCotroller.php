@@ -13,31 +13,27 @@ class PanelCotroller extends Controller
     public function index()
     {
         $student = Auth::user();
-        $studentSemesterId = $student->inscriptionsActive->semester_id;
 
-        // Verificar si tiene al menos una calificación menor a 7 en algún parcial del semestre actual
-        $hasLowGrade = Qualification::where('user_id', $student->id)
-            ->where('grade', '<', 7)
-            ->whereHas('partial', function ($query) use ($studentSemesterId) {
-                $query->where('semester_id', $studentSemesterId);
-            })
-            ->exists();
+    $activeRegistration = $student->inscriptionsActive;
 
-        $subjectsMaterials = collect(); // Colección vacía por defecto
+    if (!$activeRegistration) {
+        return view('students.panel-alumnos', ['subjectsMaterials' => collect()]);
+    }
 
-        if ($hasLowGrade) {
-            $subjectsMaterials = Subject::where('semester_id', $studentSemesterId)
-                ->whereHas('materials', function ($query) {
-                    $query->where('active', true);
-                })
-                ->with([
-                    'materials' => function ($query) {
-                        $query->where('active', true);
-                    }
-                ])
-                ->get();
-        }
+    $semesterId = $activeRegistration->semester_id;
 
-        return view('students.panel-alumnos', compact('subjectsMaterials'));
+    // Obtener materias del semestre actual con materiales activos y calificaciones < 7
+    $subjectsMaterials = Subject::where('semester_id', $semesterId)
+        ->whereHas('materials', fn ($q) => $q->where('active', true))
+        ->whereHas('qualifications', function ($query) use ($student) {
+            $query->where('user_id', $student->id)
+                  ->where('grade', '<', 7);
+        })
+        ->with([
+            'materials' => fn ($q) => $q->where('active', true),
+        ])
+        ->get();
+
+    return view('students.panel-alumnos', compact('subjectsMaterials'));
     }
 }

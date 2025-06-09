@@ -49,4 +49,8 @@ class Subject extends Model
     public function semester(){
         return $this->belongsTo(Semester::class);
     }
+
+    public function qualifications(){
+        return $this->hasMany(Qualification::class);
+    }
 }

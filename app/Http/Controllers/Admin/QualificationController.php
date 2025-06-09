@@ -31,15 +31,23 @@ class QualificationController extends Controller implements HasMiddleware
     {
         $search = request('search');
 
-        $alumnos = User::whereHas("roles", function($q) {
+        // Obtener solo usuarios con rol "Alumno", filtrando por matrícula si se proporciona
+        $alumnos = User::whereHas("roles", function ($q) {
             $q->where("name", "Alumno");
         })
-        ->when($search, function ($query, $search) {
-            $query->where('matriculation', 'like', '%' . $search . '%');
-        })
-        ->with(['qualifications.subject', 'qualifications.partial'])->get();
+            ->when($search, function ($query, $search) {
+                $query->where('matriculation', 'like', '%' . $search . '%');
+            })
+            ->with([
+                'qualifications.subject', // Carga la relación con la materia
+                'qualifications.partial'  // Carga la relación con el parcial
+            ])
+            ->get();
 
+        // Obtener todas las materias con su semestre relacionado
         $materias = Subject::with('semester')->get();
+
+        // Obtener todos los parciales activos
         $parciales = Partial::where('active', true)->get();
 
         return view('admin.qualifications.index', compact('alumnos', 'materias', 'parciales'));
